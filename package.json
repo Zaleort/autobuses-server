@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist",
+    "serve": "nodemon ./src/index.ts"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
@@ -25,9 +29,13 @@
     "@types/mongodb": "^3.6.9",
     "@types/node": "^14.14.32",
     "eslint": "^6.7.2",
-    "ts-node": "^9.1.1"
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
   },
   "nodemonConfig": {
-    "ext": "ts"
+    "ext": "ts",
+    "execMap": {
+      "ts": "node --loader ts-node/esm"
+    }
   }
 }
