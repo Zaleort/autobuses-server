@@ -8,7 +8,6 @@ import path from 'path';
 
 const app = express();
 const apiRoutes = router();
-console.log(apiRoutes);
 const __dirname = path.resolve();
 
 mongo.connect(() => {
