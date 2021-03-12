@@ -1,12 +1,12 @@
 // @TODO Conexión segura con usuario
-import mongo from 'mongodb';
+import mongo, { Db } from 'mongodb';
 const { MongoClient } = mongo;
 
 const url = 'mongodb://localhost:27017';
 const dbName = 'autobuses';
 const dbUserName = 'cuentas';
-let db;
-let dbUser;
+let db: Db;
+let dbUser: Db;
 const client = new MongoClient(url, { useUnifiedTopology: true });
 
 export default {
