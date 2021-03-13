@@ -1,15 +1,18 @@
 import { Router } from 'express';
-import mongo from '../../../mongo.js';
-
 const router = Router();
 
 router.get('/api/paradas/:id', async (req, res, next) => {
   console.log('API Call: Paradas');
-  const db = mongo.getDb();
+  const paradasModel = req.db?.nucleos;
+
+  if (!paradasModel) {
+    res.status(500).json({ message: 'Error conectando con la base de datos' });
+    return;
+  }
   const { id } = req.params;
 
   try {
-    const nucleo = await db.collection('paradas').findOne({ _id: id });
+    const nucleo = await paradasModel.findOne({ _id: id });
   
     if (nucleo === null) {
       console.warn(`API Error: La parada ${id} no existe`);

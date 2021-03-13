@@ -1,13 +1,16 @@
 import { Router } from 'express';
-import mongo from '../../../mongo.js';
-
 const router = Router({ mergeParams: true });
 
 router.get('/api/lineas', async (req, res, next) => {
   console.log('API Call: Líneas');
-  const db = mongo.getDb();
+  const lineasModel = req.db?.lineas;
+  if (!lineasModel) {
+    res.status(500).json({ message: 'Error conectando con la base de datos' });
+    return;
+  }
+
   try {
-    const lineas = await db.collection('lineas').aggregate([
+    const lineas = await lineasModel.aggregate([
       {
         $addFields: {
           paradas: {
@@ -49,7 +52,7 @@ router.get('/api/lineas', async (req, res, next) => {
           nucleosVuelta: 0,
         },
       },
-    ]).toArray();
+    ]).exec();
 
     console.log('API Response: Enviadas todas las líneas');
     res.status(200).json(lineas);

@@ -1,14 +1,18 @@
 import { Router } from 'express';
-import mongo from '../../../mongo.js';
-
 const router = Router();
 
 router.get('/api/nucleos/:id', async (req, res, next) => {
-  const db = mongo.getDb();
+  const nucleosModel = req.db?.nucleos;
+
+  if (!nucleosModel) {
+    res.status(500).json({ message: 'Error conectando con la base de datos' });
+    return;
+  }
+
   const { id } = req.params;
 
   try {
-    const nucleo = await db.collection('nucleos').findOne({ _id: id });
+    const nucleo = await nucleosModel.findOne({ _id: id });
 
     if (nucleo === null) {
       console.warn(`API Error: El núcleo ${id} no existe`);

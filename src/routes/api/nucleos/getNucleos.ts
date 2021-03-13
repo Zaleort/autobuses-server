@@ -1,13 +1,16 @@
 import { Router } from 'express';
-import mongo from '../../../mongo.js';
-
 const router = Router();
 
 router.get('/api/nucleos', async (req, res, next) => {
-  const db = mongo.getDb();
+  const nucleosModel = req.db?.nucleos;
+
+  if (!nucleosModel) {
+    res.status(500).json({ message: 'Error conectando con la base de datos' });
+    return;
+  }
 
   try {
-    const nucleos = await db.collection('nucleos').find().toArray();
+    const nucleos = await nucleosModel.find();
     console.log('API Response: Enviados todos los núcleos');
     res.status(200).json(nucleos);
   } catch (err) {

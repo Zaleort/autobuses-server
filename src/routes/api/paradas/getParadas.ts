@@ -1,13 +1,17 @@
 import { Router } from 'express';
-import mongo from '../../../mongo.js';
-
 const router = Router();
 
 router.get('/api/paradas', async (req, res, next) => {
   console.log('API Call: Paradas');
-  const db = mongo.getDb();
+  const paradasModel = req.db?.nucleos;
+
+  if (!paradasModel) {
+    res.status(500).json({ message: 'Error conectando con la base de datos' });
+    return;
+  }
+
   try {
-    const paradas = await db.collection('paradas').find().toArray();
+    const paradas = await paradasModel.find();
     console.log('API Response: Enviadas todas las paradas');
     res.status(200).json(paradas);
   } catch (err) {

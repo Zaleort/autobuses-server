@@ -1,14 +1,18 @@
 import { Router } from 'express';
-import mongo from '../../../mongo.js';
 
 const router = Router({ mergeParams: true });
 
 router.get('/api/lineas/:id', async (req, res, next) => {
   console.log('API Call: GET Línea');
-  const db = mongo.getDb();
+  const lineasModel = req.db?.lineas;
+  if (!lineasModel) {
+    res.status(500).json({ message: 'Error conectando con la base de datos' });
+    return;
+  }
+
   const { id } = req.params;
   try {
-    const linea = await db.collection('lineas').aggregate([
+    const linea = await lineasModel.aggregate([
       {
         $match: { _id: id },
       },
@@ -53,15 +57,15 @@ router.get('/api/lineas/:id', async (req, res, next) => {
           nucleos: 0,
         },
       },
-    ]).next();
+    ]).exec();
 
-    if (linea === null) {
+    if (linea[0] === null) {
       console.warn(`API Error: La línea ${id} no existe`);
       res.status(404).json({ message: 'La línea no existe' });
     }
 
     console.log(`Enviada la línea ${id}`);
-    res.status(200).json(linea);
+    res.status(200).json(linea[0]);
   } catch (err) {
     console.log(err.stack);
     res.status(500).json({ message: 'Ha ocurrido un error al contactar con la base de datos' })
