@@ -3,7 +3,7 @@ const router = Router();
 
 router.get('/api/paradas', async (req, res, next) => {
   console.log('API Call: Paradas');
-  const paradasModel = req.db?.nucleos;
+  const paradasModel = req.db?.paradas;
 
   if (!paradasModel) {
     res.status(500).json({ message: 'Error conectando con la base de datos' });
