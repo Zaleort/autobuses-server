@@ -1,9 +1,6 @@
-import { Model } from "mongoose";
-
+import { DbModels } from '../../src/database/createDatabase';
 declare module 'express-serve-static-core' {
   export interface Request {
-    db?: {
-      [key: string]: Model<any, any>
-    }
+    db?: DbModels,
   }
 }
