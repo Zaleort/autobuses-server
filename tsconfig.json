@@ -10,9 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "types": [
-      "jest"
-    ],
+    "typeRoots": ["types"],
     "paths": {
       "@/*": [
         "src/*"

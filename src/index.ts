@@ -1,24 +1,25 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import mongo from './mongo.js';
-import scrape from './getTableData.js';
-import router from './routes/createRouter.js';
+import createDatabase from './database/createDatabase.js';
+import createRouter from './routes/createRouter.js';
 import path from 'path';
 
 const app = express();
-const apiRoutes = router();
+const router = createRouter();
+const database = createDatabase();
 const __dirname = path.resolve();
-
-mongo.connect(() => {
-  // scrape.getLineasTableInfo();
-});
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/', apiRoutes);
+app.use((req, res, next) => {
+  req.db = database;
+  next();
+}); 
+
+app.use('/', router);
 
 /* app.use(express.static(path.resolve(__dirname, '../dist/Autobuses')));
 app.get('*', (req, res) => {
