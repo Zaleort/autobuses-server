@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { generateToken } from '../../lib/accessToken.js';
 import bcrypt from 'bcrypt';
 
 const router = Router();
@@ -15,10 +16,10 @@ router.post('/auth/login', async (req, res, next) => {
   console.log('Intentando hacer login');
 
   try {
-    const user = await usuariosModel.findOne({ usuario }).select({ contrasena: 0 });
+    const user = await usuariosModel.findOne({ usuario });
     if (!user) {
       console.log('El usuario no existe');
-      res.status(401).json({ message: 'Usuario o contraseña inválido' });
+      res.status(500).json({ message: 'Usuario o contraseña inválido' });
       return;
     }
 
@@ -28,7 +29,14 @@ router.post('/auth/login', async (req, res, next) => {
     const compare = await bcrypt.compare(pass, dbPass);
     if (compare) {
       console.log('Login realizado con éxito');
-      res.status(200).json(user);
+      const token = generateToken(usuario);
+      console.log(token);
+      const response = {
+        ...user.toObject(),
+        contrasena: undefined,
+        token,
+      };
+      res.status(200).json(response);
       return;
     }
 
