@@ -28,5 +28,3 @@ router.get('/api/paradas/:id', async (req, res, next) => {
 });
 
 export default router;
-
-
