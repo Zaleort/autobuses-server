@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import createDatabase from './database/createDatabase.js';
 import createRouter from './routes/createRouter.js';
 import path from 'path';
+import dontenv from 'dotenv';
+dontenv.config();
 
 const app = express();
 const router = createRouter();
