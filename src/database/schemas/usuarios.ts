@@ -15,7 +15,11 @@ const usuarios = new Schema<UsuarioDocument, UsuarioModel>({
     required: true,
   },
 
-  autobuses: Object,
+  autobuses: {
+    lineas: [String],
+    tarjetas: [Object],
+    recorridos: [Object],
+  },
 });
 
 export default usuarios;
