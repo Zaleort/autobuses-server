@@ -39,7 +39,7 @@ router.post('/api/usuarios/:usuario/lineas', authenticateToken, async (req, res,
 
     const lineasUsuarios = usuario.autobuses.lineas || [];
     if (lineasUsuarios.findIndex(l => l === lineaId) !== -1) {
-      res.status(200).json({ message: 'La línea ya existe dentro de las favoritas' });
+      res.status(500).json({ message: 'La línea ya existe dentro de las favoritas' });
       return;
     }
 
