@@ -1,12 +1,13 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import dontenv from 'dotenv';
 import createDatabase from './database/createDatabase.js';
 import createRouter from './routes/createRouter.js';
-import path from 'path';
-import dontenv from 'dotenv';
-dontenv.config();
+import { setDatabase, updateDatabase } from './getTableData.js';
 
+dontenv.config();
 const app = express();
 const router = createRouter();
 const database = createDatabase();
