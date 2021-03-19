@@ -12,6 +12,8 @@ const lineas = new Schema<LineaDocument, LineaModel>({
   nucleosVuelta: [String],
   paradasIda: [String],
   paradasVuelta: [String],
+  saltos: Number,
+  recorrido: String,
 });
 
 export default lineas;

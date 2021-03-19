@@ -10,6 +10,8 @@ interface LineaSchema {
   nucleosVuelta: [],
   paradasIda: [],
   paradasVuelta: [],
+  saltos: number,
+  recorrido: string,
 }
 
 interface LineaDocument extends LineaSchema, Document {}

@@ -1,7 +1,7 @@
 import { Document, Model } from 'mongoose';
 
 interface ParadaSchema {
-  _id: string;
+  _id: string | number;
   name: string;
   zona: string;
   index?: number;
