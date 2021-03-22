@@ -197,7 +197,7 @@ export async function getParadasLinea(tabla: any): Promise<string[]> {
     let doc = await db.paradas.findOne({ _id: 0 });
 
     if (!doc) {
-      doc = await db.paradas.create({ _id: 0, index: 154 })
+      doc = await db.paradas.create({ _id: 0, index: 0 })
     }
 
     _id = `p${doc.index}`;

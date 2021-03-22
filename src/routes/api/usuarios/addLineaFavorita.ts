@@ -1,3 +1,4 @@
+import { LineaDocument } from '@/interfaces/lineas.js';
 import { Router } from 'express';
 import { authenticateToken } from '../../../lib/accessToken.js';
 
@@ -18,14 +19,6 @@ router.post('/api/usuarios/:usuario/lineas', authenticateToken, async (req, res,
   }
 
   try {
-    const lineaId = req.body.linea;
-    const linea = await lineasModel.findOne({ _id: lineaId });
-
-    if (!linea) {
-      res.status(404).json({ message: 'La línea no existe' });
-      return;
-    }
-
     const userName = req.user;
     const usuario = await usuariosModel.findOne({ usuario: userName });
 
@@ -34,13 +27,28 @@ router.post('/api/usuarios/:usuario/lineas', authenticateToken, async (req, res,
       return;
     }
 
-    const lineasUsuarios = usuario.autobuses.lineas || [];
-    if (lineasUsuarios.findIndex(l => l === lineaId) !== -1) {
-      res.status(500).json({ message: 'La línea ya existe dentro de las favoritas' });
+    const lineaIds = Array.isArray(req.body.linea) ? req.body.linea : [req.body.linea];
+    if (!lineaIds || lineaIds.length === 0) {
+      res.status(401).json({ message: 'No se ha especificado ninguna línea' });
       return;
     }
 
-    lineasUsuarios.push(lineaId);
+    const lineas: LineaDocument[] = await lineasModel.aggregate([
+      {
+        $match: {
+          _id: { $in: lineaIds },
+        },
+      },
+    ]).exec();
+
+    // Array solo con las líneas que existan de verdad
+    const ids = lineas.map(l => l._id);
+
+    let lineasUsuarios = usuario.autobuses.lineas || [];
+    lineasUsuarios.push(...ids);
+
+    // Elimina duplicados
+    lineasUsuarios = [ ...new Set(lineasUsuarios) ];
     usuario.autobuses.lineas = lineasUsuarios;
     const updated = await usuario.save();
 
