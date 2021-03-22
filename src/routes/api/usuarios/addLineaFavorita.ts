@@ -12,9 +12,6 @@ router.post('/api/usuarios/:usuario/lineas', authenticateToken, async (req, res,
     return;
   }
 
-  console.log(req.params.usuario);
-  console.log(req.user);
-
   if (req.params.usuario !== req.user) {
     res.status(403).json({ message: 'No tienes permiso para modificar otro usuario' });
     return;

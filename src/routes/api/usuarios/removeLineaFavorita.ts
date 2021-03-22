@@ -3,7 +3,7 @@ import { authenticateToken } from '../../../lib/accessToken.js';
 
 const router = Router({ mergeParams: true });
 
-router.delete('/api/usuarios/:usuario/lineas/:linea', authenticateToken, async (req, res, next) => {
+router.delete('/api/usuarios/:usuario/lineas', authenticateToken, async (req, res, next) => {
   console.log('API Call: Eliminar línea favorita');
   const usuariosModel = req.db?.usuarios;
   const lineasModel = req.db?.lineas;
@@ -18,7 +18,7 @@ router.delete('/api/usuarios/:usuario/lineas/:linea', authenticateToken, async (
   }
 
   try {
-    const lineaId = req.params.linea;
+    const lineaId = req.body.linea;
     const userName = req.user;
     const usuario = await usuariosModel.findOne({ usuario: userName });
 
@@ -27,17 +27,14 @@ router.delete('/api/usuarios/:usuario/lineas/:linea', authenticateToken, async (
       return;
     }
 
-    const lineasUsuarios = usuario.autobuses.lineas || [];
-    const i = lineasUsuarios.findIndex(l => l === lineaId);
-    if (i === -1) {
-      res.status(404).json({ message: 'La línea no existe dentro de las favoritas' });
-      return;
+    if (Array.isArray(lineaId)) {
+      console.log('Is Array');
+      usuario.autobuses.lineas = usuario.autobuses.lineas.filter(l => !lineaId.some(id => id === l));
+    } else {
+      usuario.autobuses.lineas = usuario.autobuses.lineas.filter(l => l !== lineaId);
     }
 
-    lineasUsuarios.splice(i, 1);
-    usuario.autobuses.lineas = lineasUsuarios;
     const updated = await usuario.save();
-
     res.status(200).json({ ...updated.toObject(), contrasena: undefined });
   } catch (err) {
     console.log(err.stack);
