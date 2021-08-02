@@ -7,6 +7,7 @@ import getParadas from './api/paradas/getParadas.js';
 import addLineaFavorita from './api/usuarios/addLineaFavorita.js';
 import removeLineaFavorita from './api/usuarios/removeLineaFavorita.js';
 import getLineasFavoritas from './api/usuarios/getLineasFavoritas.js';
+import addTarjeta from './api/usuarios/addTarjeta.js';
 import login from './auth/login.js';
 import register from './auth/register.js';
 import checkToken from './auth/checkToken.js';
@@ -22,6 +23,7 @@ export default () => {
     addLineaFavorita,
     removeLineaFavorita,
     getLineasFavoritas,
+    addTarjeta,
     login,
     register,
     checkToken,
