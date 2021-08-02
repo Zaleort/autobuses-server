@@ -17,7 +17,12 @@ const usuarios = new Schema<UsuarioDocument, UsuarioModel>({
 
   autobuses: {
     lineas: [String],
-    tarjetas: [Object],
+    tarjetas: [{
+      _id: Types.ObjectId,
+      nombre: String,
+      saldo: Number,
+      viajes: Number,
+    }],
     recorridos: [Object],
   },
 });

@@ -6,9 +6,16 @@ interface UsuarioSchema {
   contrasena: string;
   autobuses: {
     lineas: string[];
-    tarjetas: object[];
+    tarjetas: TarjetaSchema[];
     recorridos: object[];
   };
+}
+
+interface TarjetaSchema {
+  _id: string;
+  nombre: string;
+  saldo: number;
+  saldo: number;
 }
 
 interface UsuarioDocument extends UsuarioSchema, Document {}
