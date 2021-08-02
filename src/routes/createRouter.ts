@@ -8,6 +8,7 @@ import addLineaFavorita from './api/usuarios/addLineaFavorita.js';
 import removeLineaFavorita from './api/usuarios/removeLineaFavorita.js';
 import getLineasFavoritas from './api/usuarios/getLineasFavoritas.js';
 import addTarjeta from './api/usuarios/addTarjeta.js';
+import removeTarjeta from './api/usuarios/removeTarjeta.js';
 import login from './auth/login.js';
 import register from './auth/register.js';
 import checkToken from './auth/checkToken.js';
@@ -24,6 +25,7 @@ export default () => {
     removeLineaFavorita,
     getLineasFavoritas,
     addTarjeta,
+    removeTarjeta,
     login,
     register,
     checkToken,
