@@ -5,7 +5,7 @@ import { authenticateToken } from '../../../lib/accessToken.js';
 const router = Router({ mergeParams: true });
 
 router.delete('/api/usuarios/:usuario/tarjetas', authenticateToken, async (req, res, next) => {
-  console.log('API Call: Añadir tarjeta');
+  console.log('API Call: Borrar tarjeta');
   const usuariosModel = req.db?.usuarios;
 
   if (!usuariosModel) {
@@ -32,7 +32,7 @@ router.delete('/api/usuarios/:usuario/tarjetas', authenticateToken, async (req, 
       return;
     }
 
-    const i = usuario.autobuses.tarjetas.findIndex(t => t._id === id);
+    const i = usuario.autobuses.tarjetas.findIndex(t => t._id.toString() === id);
     if (i === -1) {
       res.status(404).json({ message: `No se ha encontrado la tarjeta con ID ${id}` });
       return;
