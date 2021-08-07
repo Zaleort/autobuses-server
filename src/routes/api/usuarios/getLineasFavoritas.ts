@@ -4,7 +4,7 @@ import { authenticateToken } from '../../../lib/accessToken.js';
 const router = Router({ mergeParams: true });
 
 router.get('/api/usuarios/:usuario/lineas', authenticateToken, async (req, res, next) => {
-  console.log('API Call: Añadir línea favorita');
+  console.log('API Call: GET línea favorita');
   const usuariosModel = req.db?.usuarios;
   const lineasModel = req.db?.lineas;
   if (!usuariosModel || !lineasModel) {
@@ -29,7 +29,7 @@ router.get('/api/usuarios/:usuario/lineas', authenticateToken, async (req, res, 
     const lineasUsuarios = usuario.autobuses.lineas;
 
     if (!lineasUsuarios || lineasUsuarios.length === 0) {
-      res.status(200).json({ message: 'Ninguna línea favorita' });
+      res.status(200).json([]);
       return;
     }
 
@@ -60,6 +60,8 @@ router.get('/api/usuarios/:usuario/lineas', authenticateToken, async (req, res, 
         },
       },
     ]).exec();
+
+    console.log('Líneas favoritas obtenidas con éxito');
     res.status(200).json(lineas);
   } catch (err) {
     console.log(err.stack);

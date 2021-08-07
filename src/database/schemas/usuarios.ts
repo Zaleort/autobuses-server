@@ -21,7 +21,6 @@ const usuarios = new Schema<UsuarioDocument, UsuarioModel>({
       _id: Types.ObjectId,
       nombre: String,
       saldo: Number,
-      viajes: Number,
     }],
     recorridos: [Object],
   },

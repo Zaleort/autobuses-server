@@ -15,7 +15,6 @@ interface TarjetaSchema {
   _id: string;
   nombre: string;
   saldo: number;
-  saldo: number;
 }
 
 interface UsuarioDocument extends UsuarioSchema, Document {}
