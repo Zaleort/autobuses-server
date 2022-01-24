@@ -1,29 +1,25 @@
 import { Router } from 'express';
+import NucleosMongoRepository from '../../../infrastructure/nucleos/NucleosMongoRepository.js';
+import GetNucleoCommand from '../../../aplicacion/getNucleo/GetNucleoCommand.js';
+import GetNucleoHandler from '../../../aplicacion/getNucleo/GetNucleoHandler.js';
+
 const router = Router();
 
 router.get('/api/nucleos/:id', async (req, res, next) => {
-  const nucleosModel = req.db?.nucleos;
-
-  if (!nucleosModel) {
-    res.status(500).json({ message: 'Error conectando con la base de datos' });
-    return;
-  }
-
-  const { id } = req.params;
-
   try {
-    const nucleo = await nucleosModel.findOne({ _id: id });
-
-    if (nucleo === null) {
-      console.warn(`API Error: El núcleo ${id} no existe`);
-      res.status(404).json({ message: 'El núcleo solicitado no existe' });
+    if (!req.db) {
+      throw new Error('No se ha podido conectar con la base de datos');
     }
 
-    console.log(`API Response: Enviado el núcleo ${id}`);
+    const nucleoHandler = new GetNucleoHandler(new NucleosMongoRepository(req.db), req.db);
+    const nucleo = nucleoHandler.execute(new GetNucleoCommand(req.params.id));
     res.status(200).json(nucleo);
-  } catch (err) {
-    console.log(err.stack);
-    res.status(500).json({ message: 'Ha ocurrido un error conectándose con la base de datos' })
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message })
+    }
+
+    res.status(500).json({ message: 'Ha ocurrido un error inesperado' });
   }
 });
 
