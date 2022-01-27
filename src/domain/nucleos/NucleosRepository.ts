@@ -1,6 +1,6 @@
 import Nucleo from "./Nucleo.js";
 
 export interface NucleosRepository {
-  find(): Promise<Nucleo[] | undefined>
+  findAll(): Promise<Nucleo[] | undefined>
   findOne(id: string): Promise<Nucleo | undefined>;
 }

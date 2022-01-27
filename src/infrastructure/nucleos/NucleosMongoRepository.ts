@@ -8,7 +8,7 @@ export default class NucleosMongoRepository implements NucleosRepository {
     this.db = db;
   }
 
-  async find(): Promise<Nucleo[] | undefined> {
+  async findAll(): Promise<Nucleo[] | undefined> {
     const nucleosModel = this.db.nucleos;
     const nucleos = await nucleosModel.find().exec();
 

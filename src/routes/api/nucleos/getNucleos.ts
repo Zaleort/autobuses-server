@@ -10,7 +10,7 @@ router.get('/api/nucleos', async (req, res, next) => {
       throw new Error('Ha ocurrido un error conectando con la base de datos');
     }
 
-    const nucleosHandler = new GetNucleosHandler(new NucleosMongoRepository(req.db), req.db);
+    const nucleosHandler = new GetNucleosHandler(new NucleosMongoRepository(req.db));
     const nucleos = await nucleosHandler.getNucleos();
 
     console.log('API Response: Enviados todos los núcleos');

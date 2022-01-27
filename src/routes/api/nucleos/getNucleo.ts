@@ -12,7 +12,7 @@ router.get('/api/nucleos/:id', async (req, res, next) => {
     }
 
     const nucleoHandler = new GetNucleoHandler(new NucleosMongoRepository(req.db), req.db);
-    const nucleo = nucleoHandler.execute(new GetNucleoCommand(req.params.id));
+    const nucleo = await nucleoHandler.execute(new GetNucleoCommand(req.params.id));
     res.status(200).json(nucleo);
   } catch (error) {
     if (error instanceof Error) {
